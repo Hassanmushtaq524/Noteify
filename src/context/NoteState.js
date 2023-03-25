@@ -44,7 +44,6 @@ const NoteState = (props) => {
     });
 
     const json = await response.json();
-    console.log(json);
     setNotes(notes.concat(json));
   }
 
@@ -74,7 +73,7 @@ const NoteState = (props) => {
       },
       body: JSON.stringify(data)
     });
-
+    const json = await response.json();
     // reflecting change locally
     let newNote = {};
     let newNotes = [];
