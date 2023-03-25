@@ -31,8 +31,7 @@ router.post("/createuser",
 
             // salt the password and use the salt to hash it
             let salt = await bcrypt.genSalt(10);
-            let secPass = await bcrypt.hash(req.body.password, salt);
-
+            let secPass = await bcrypt.hash(req.body.password, 10);
             // store the user in DB using the model and the new hashed password  
             user = await User.create({
                 name: req.body.name,
@@ -78,14 +77,14 @@ router.post("/login",
 
         try {
             // check if user already exists
-            let user = await User.findOne({ email });
+            const user = await User.findOne({ email });
             if (!user) {
                 return res.status(400).json({
                     error: "Please use valid credentials."
                 });
             }
             // compare the password if the email exists
-            let check = await bcrypt.compare(password, user.password);
+            const check = await bcrypt.compareSync(password, user.password);
             if (!check) {
                 return res.status(400).json({
                     error: "Please use valid credentials."

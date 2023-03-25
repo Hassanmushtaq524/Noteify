@@ -8,9 +8,15 @@ const fetchuser = (req, res, next) => {
         return res.status(401).json({error: "Please use a valid token."});
     }
     try {
+        jwt.verify(token, jwtSecret, (err, data) => {
+            if (err) {
+                console.log(err);
+            } else {
+                req.user = data.user;
+            }
+        });
         
-        const data = jwt.verify(token, jwtSecret);
-        req.user = data.user;
+        
         next();
     
     } catch (error) {
