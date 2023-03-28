@@ -6,8 +6,7 @@ import NoteContext from "./NoteContext";
 // and reflect those changes in the backend.
 const NoteState = (props) => {
   // auth-token
-  const jwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQwODEwMDZkZDM3NzM3ZDFkMzU5NWExIn0sImlhdCI6MTY3OTcxMzY0MH0.dsRTnqgdOHIjHgdqJEghbv-6mZ5wo9x8Cve47dvW-WA";
-
+  const jwtToken = localStorage.getItem("token");
   // host url
   const host = "http://localhost:5000";
 
@@ -89,7 +88,6 @@ const NoteState = (props) => {
       }
       
     }
-    console.log(newNotes);
     setNotes(newNotes);
   }
 

@@ -1,5 +1,8 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
+
+
+// Navbar: defines the navbar component
 export default function Navbar(props) {
     const location = useLocation();
     const {title} = props;
@@ -19,6 +22,10 @@ export default function Navbar(props) {
                             <Link className={`nav-link ${(location.pathname==="/about")? "active": ""}`} to="/about">About</Link>
                         </li>
                     </ul>
+                    <form className="d-flex">
+                        <Link className="btn btn-secondary mx-1" to="/login" role="button">Login</Link>
+                        <Link className="btn btn-secondary mx-1" to="/signup" role="button">Signup</Link>
+                    </form>
                 </div>
             </div>
         </nav>

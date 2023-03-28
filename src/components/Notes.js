@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
+import AlertContext from '../context/AlertContext';
 import NoteContext from '../context/NoteContext'
 import NoteItem from './NoteItem';
 
 const Notes = () => {
-    let { notes, getAllNotes, editNote } = useContext(NoteContext);
+    const { notes, getAllNotes, editNote } = useContext(NoteContext);
+    const { showAlert } = useContext(AlertContext);
     const defaultNote = {title: "", description: "", tag: ""};
     let [note, setNote] = useState(defaultNote);
     const ref = useRef(null);
@@ -30,6 +32,7 @@ const Notes = () => {
     const handleClick = () => {
         refClose.current.click();
         editNote(note._id, note.title, note.description, note.tag);
+        showAlert("Edited successfully", "success");
     }
     return (
         <>

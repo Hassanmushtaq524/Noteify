@@ -17,15 +17,16 @@ router.post("/createuser",
     async (req, res) => {
         try {
             // validating our request
+            let success = false;
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(400).json({ errors: errors.array() });
+                return res.status(400).json({ success, errors: errors.array() });
             }
 
             // checking if email already exists
             let user = await User.findOne({ email: req.body.email });
             if (user) {
-                return res.status(400).json({ errors: "This email is already in use." });
+                return res.status(400).json({ success, errors: "This email is already in use." });
             }
 
 
@@ -48,7 +49,8 @@ router.post("/createuser",
             }
             // send the token
             const jwtToken = jwt.sign(data, jwtSecret);
-            return res.json({ jwtToken });
+            success = true;
+            return res.json({ success, jwtToken });
 
         } catch (error) {
 
@@ -65,11 +67,11 @@ router.post("/login",
     [body("email").isEmail(),
     body("password").exists()],
     async (req, res) => {
-
+        let success = false;
         // validating our request
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            return res.status(400).json({ success, errors: errors.array() });
         }
 
         // get request 
@@ -80,6 +82,7 @@ router.post("/login",
             const user = await User.findOne({ email });
             if (!user) {
                 return res.status(400).json({
+                    success,
                     error: "Please use valid credentials."
                 });
             }
@@ -87,6 +90,7 @@ router.post("/login",
             const check = await bcrypt.compareSync(password, user.password);
             if (!check) {
                 return res.status(400).json({
+                    success,
                     error: "Please use valid credentials."
                 });
             }
@@ -98,9 +102,11 @@ router.post("/login",
                     id: user.id
                 }
             }
-
+            
             const jwtToken = jwt.sign(data, jwtSecret);
-            return res.json({ jwtToken });
+            // successfully passed all checks
+            success = true;
+            return res.json({ success, jwtToken });
 
         } catch (error) {
 
