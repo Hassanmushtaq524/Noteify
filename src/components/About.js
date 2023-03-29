@@ -1,10 +1,10 @@
 import React from 'react'
-import NoteContext from '../context/NoteContext'
 
 const About = () => {
     return (
-        <div>
-            This is About 
+        <div className="container">
+            <h2 className="my-3">About</h2>
+            <p>Hey</p>
         </div>
     )
 }

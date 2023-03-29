@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import AlertContext from '../context/AlertContext';
 import NoteContext from '../context/NoteContext'
 import NoteItem from './NoteItem';
@@ -10,11 +11,16 @@ const Notes = () => {
     let [note, setNote] = useState(defaultNote);
     const ref = useRef(null);
     const refClose = useRef(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        getAllNotes();
-        // es-lint-disable-next-line
-    }, [])
+        if (localStorage.getItem("token")) {
+            getAllNotes();
+        } else {
+            navigate("/login");
+        }
+        // eslint-disable-next-line
+    });
 
     // updateNote toggles the modal, and displays the note data of note clicked
     // note passed from NoteItem component

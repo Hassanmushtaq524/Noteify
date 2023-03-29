@@ -10,6 +10,7 @@ const Login = () => {
 
   // handles submission of form
   const handleSubmit = async (e) => {
+
     e.preventDefault();
 
     const data = { email: e.target.email.value, password: e.target.password.value };
@@ -22,11 +23,10 @@ const Login = () => {
       body: JSON.stringify(data)
     });
     const json = await response.json();
-
     if (json.success) {
       // redirect and save auth token
+      
       localStorage.setItem("token", json.jwtToken);
-      console.log(json);
       showAlert("Logged In!", "success");
       navigate("/");
     } else {
@@ -37,16 +37,16 @@ const Login = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="form-group">
+      <h2 className="my-3">Login</h2>
+      <div className="form-group my-3">
         <label htmlFor="formEmail">Email address</label>
         <input type="email" className="form-control" id="formEmail" aria-describedby="emailHelp" name="email" placeholder="Enter email" />
-        <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
       </div>
-      <div className="form-group">
+      <div className="form-group my-3">
         <label htmlFor="formPassword">Password</label>
         <input type="password" className="form-control" id="formPassword" name="password" placeholder="Password" />
       </div>
-      <button type="submit" className="btn btn-primary my-2">Submit</button>
+      <button type="submit" className="btn btn-secondary my-3">Submit</button>
     </form>
   )
 }

@@ -30,12 +30,12 @@ router.post("/createnote",
                 tag: tag
             })
 
-            return res.send(note);
+            return res.json(note);
 
         } catch (error) {
 
             console.log(error);
-            return res.status(500).send("Internal Server Error.");
+            return res.status(500).json({error: "Internal Server Error."});
         }
 
 
@@ -52,7 +52,7 @@ router.get("/fetchallnotes", fetchuser, async (req, res) => {
         return res.json(notes);
     } catch (error) {
         console.log(error);
-        return res.status(500).send("Internal Server Error.");
+        return res.status(500).json({error: "Internal Server Error."});
     }
 })
 
@@ -74,16 +74,16 @@ router.put("/updatenote/:id", fetchuser, async (req, res) => {
 
         // check if note exists with passed id
         let note = await Notes.findById(req.params.id);
-        if (!note) return res.status(404).send("Not found");
+        if (!note) return res.status(404).json({error: "Not found"});
         // check if the user id is the same as current id passed in token
-        if (note.user.toString() !== req.user.id) return res.status(401).send("Not Allowed");
+        if (note.user.toString() !== req.user.id) return res.status(401).json({error: "Not Allowed"});
 
         // update note
         note = await Notes.findByIdAndUpdate(req.params.id, { $set: newNote }, { new: true });
         return res.send(note);
     } catch (error) {
         console.log(error);
-        return res.status(500).send("Internal Server Error.");
+        return res.status(500).json({error: "Internal Server Error."});
     }
 
 })
@@ -95,16 +95,16 @@ router.delete("/deletenote/:id", fetchuser, async (req, res) => {
     try {
         // get the note
         let note = await Notes.findById(req.params.id);
-        if (!note) return res.status(404).send("Not found");
+        if (!note) return res.status(404).json({error: "Not found"});
         // check if the user id is the same as current id passed in token
-        if (note.user.toString() !== req.user.id) return res.status(401).send("Not Allowed");
+        if (note.user.toString() !== req.user.id) return res.status(401).json({error: "Not Allowed"});
 
         await Notes.findByIdAndDelete(req.params.id);
-        return res.json({Success: "Note deleted"});
+        return res.json({success: "Note deleted"});
 
     } catch (error) {
         console.log(error);
-        return res.status(500).send("Internal Server Error.");
+        return res.status(500).json({error: "Internal Server Error."});
     }
 
 

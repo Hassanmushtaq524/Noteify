@@ -6,6 +6,13 @@ import { Link, useLocation } from 'react-router-dom'
 export default function Navbar(props) {
     const location = useLocation();
     const {title} = props;
+
+
+    // Logout
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+    }
+
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <div className="container-fluid">
@@ -23,8 +30,15 @@ export default function Navbar(props) {
                         </li>
                     </ul>
                     <form className="d-flex">
-                        <Link className="btn btn-secondary mx-1" to="/login" role="button">Login</Link>
-                        <Link className="btn btn-secondary mx-1" to="/signup" role="button">Signup</Link>
+                        {!localStorage.getItem("token")?  
+                            <div>
+                                <Link className="btn btn-secondary mx-1" to="/login" role="button">Login</Link> 
+                                <Link className="btn btn-secondary mx-1" to="/signup" role="button">Signup</Link>
+                            </div> 
+                        :
+                            <Link className="btn btn-secondary mx-1" to="/login" role="button" onClick={handleLogout}>Logout</Link> 
+                        }
+                        
                     </form>
                 </div>
             </div>

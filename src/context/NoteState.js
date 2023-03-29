@@ -5,6 +5,7 @@ import NoteContext from "./NoteContext";
 // NoteState: Contains functionality to get all notes, add a note, delete notes, and edit notes,
 // and reflect those changes in the backend.
 const NoteState = (props) => {
+
   // auth-token
   const jwtToken = localStorage.getItem("token");
   // host url
@@ -14,23 +15,32 @@ const NoteState = (props) => {
   const noteInit = [];
   let [notes, setNotes] = useState(noteInit);
 
-  // fetch all the notes
+  // Fetch all the notes
   const getAllNotes = async () => {
 
+    // API call
     const url = `${host}/api/notes/fetchallnotes`;
     const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-type": "application/json",
-        "auth-token": jwtToken
+        "auth-token": localStorage.getItem("token")
       }
     });
+
+    // Response
     const json = await response.json();
-    setNotes(json);
+    
+    if (!json.error) {
+      
+      setNotes(json);
+    }
   }
 
   // Add a note
   const addNote = async (title, description, tag) => {
+
+    // API call
     const url = `${host}/api/notes/createnote`;
     const data = { title: title, description: description, tag: tag };
     const response = await fetch(url, {
@@ -42,12 +52,15 @@ const NoteState = (props) => {
       body: JSON.stringify(data)
     });
 
+    // Response
     const json = await response.json();
     setNotes(notes.concat(json));
   }
 
   // Delete a note
   const deleteNote = async (id) => {
+
+    // API call
     const url = `${host}/api/notes/deleteNote/${id}`;
     const response = await fetch(url, {
       method: "DELETE",
@@ -56,12 +69,16 @@ const NoteState = (props) => {
         "auth-token": jwtToken
       }
     });
-
+    // eslint-disable-next-line
+    // Response
+    const json = await response.json();
     setNotes(notes.filter((note) => { return note._id !== id }));
   }
 
   // Edit a note
   const editNote = async (id, title, description, tag) => {
+
+    // API call
     const url = `${host}/api/notes/updatenote/${id}`;
     const data = { title: title, description: description, tag: tag };
     const response = await fetch(url, {
@@ -72,7 +89,11 @@ const NoteState = (props) => {
       },
       body: JSON.stringify(data)
     });
+
+    // eslint-disable-next-line
+    // Response
     const json = await response.json();
+    
     // reflecting change locally
     let newNote = {};
     let newNotes = [];
@@ -86,7 +107,7 @@ const NoteState = (props) => {
       } else {
         newNotes.push(note);
       }
-      
+
     }
     setNotes(newNotes);
   }

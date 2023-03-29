@@ -2,7 +2,11 @@ import React, { useContext } from 'react';
 import AlertContext from '../context/AlertContext';
 
 const Alert = () => {
+
+  // use the AlertContext
   let { alert } = useContext(AlertContext);
+
+  // capitalizes the first letter
   const capitalize = (word) => {
     let lower = word.toLowerCase();
     return lower.charAt(0).toUpperCase() + lower.slice(1);

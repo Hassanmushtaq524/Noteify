@@ -102,16 +102,16 @@ router.post("/login",
                     id: user.id
                 }
             }
-            
+
             const jwtToken = jwt.sign(data, jwtSecret);
             // successfully passed all checks
             success = true;
-            return res.json({ success, jwtToken });
+            return res.json({ success, jwtToken: jwtToken });
 
         } catch (error) {
 
             console.error(error.message);
-            return res.status(500).send("Internal Server Error.");
+            return res.status(500).json({ error: "Internal Server Error." });
 
         }
 
@@ -126,12 +126,12 @@ router.post("/getuser", fetchuser, async (req, res) => {
 
         let userId = req.user.id;
         let user = await User.findById(userId).select("-password");
-        return res.send(user);
+        return res.json(user);
     } catch (error) {
 
 
         console.error(error.message);
-        return res.status(500).send("Internal Server Error.");
+        return res.status(500).json({ error: "Internal Server Error." });
 
     }
 })
