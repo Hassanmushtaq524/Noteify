@@ -1,6 +1,6 @@
 # Noteify App
 
-Add your own notes, edit them and delete them. You can login to your account, or signup for a new account, and view your notes on that account. Everything is stores in a database!
+Add your own notes, edit them and delete them. You can login to your account, or signup for a new account, and view your notes on that account. Everything is stored in a database!
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
